@@ -1,0 +1,20 @@
+# 环境变量与凭证（切勿提交 MCP Token）
+.env
+.env.*
+*.local
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 临时/研究产物
+*.tmp
+scratch/
