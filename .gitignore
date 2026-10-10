@@ -21,3 +21,6 @@ scratch/
 
 # 报名 Issue 草稿（含 Token 示例，勿入库）
 issue_body.md
+
+# 运行时用户画像（本地隐私数据）
+mcd-profile.json

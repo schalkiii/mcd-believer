@@ -16,7 +16,7 @@
 | 分组 | 工具 | 业务价值 |
 |---|---|---|
 | 点餐交易 | query-nearby-stores, delivery-query-addresses, delivery-create-address, delivery-query-stores, query-meals, query-meal-detail, query-meal-assistance, calculate-price, create-order, query-order, cancel-order, order-list | 到店/得来速/麦乐送/团餐的选店—选品—算价—下单—跟单闭环 |
-| 优惠券/促销 | available-coupons, auto-bind-coupons, query-my-coupons, query-store-coupons, query-promotions | 领券、判断本单可用券、满减满折凑单最优 |
+| 优惠券/促销 | available-coupons, auto-bind-coupons, query-my-coupons, query-store-coupons, query-promotions | 领券、判断本单可用券、满减满折凑单最优、亏本凑单劝退、券到期倒计时 |
 | 营养 | list-nutrition-foods | 按目标热量/偏好配餐 |
 | 积分/商城/抽奖 | query-my-account, mall-points-products, mall-product-detail, mall-create-order, mall-order-list, mall-order-detail, query-lottery-info, draw-lottery, query-my-prizes | 积分资产与过期提醒、兑换商品/券、参与抽奖、查中奖 |
 | 活动/派对 | now-time-info, campaign-calendar, query-party-city, query-party-store, query-party-store-date, query-party-store-session, party-order-create | 活动日历情报、主题派对逐步预约下单 |
@@ -52,6 +52,18 @@ query-lottery-info → 展示 drawDecision.nextConsumption / resourceEligible
 ```
 mall-points-products(spuId) → query-party-city → query-party-store → query-party-store-date
   → query-party-store-session → party-order-create
+```
+
+### 资产到期倒计时账（券+积分+抽奖机会一盘清）
+```
+query-my-coupons + query-my-account(将过期积分) + query-lottery-info(剩余次数)
+  → 按到期日升序归并成倒计时表 → 结合 campaign-calendar/query-store-coupons 给出"本周用掉它"的具体行动
+```
+
+### 一句话复购老样子
+```
+order-list(最近一单) → 提取 productCode → query-meals 核在售 → calculate-price 重验价
+  → 用户确认 → create-order；偏好同步写回 mcd-profile.json
 ```
 
 ## 编排要点（写入 Skill 的硬约束）

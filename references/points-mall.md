@@ -35,3 +35,8 @@
 ## 4. 兑换订单查询
 
 - `mall-order-list`（lastId,size）：商城近一年订单列表；`mall-order-detail`（orderId）：状态、支付积分/金额、物流、派对预订信息。
+
+## 5. 周边 / 上新 / 末班车联动
+
+- **周边猎人**：用户问"最近有什么新周边/玩具能换" → `mall-points-products` 带 `catRuleIds=2>8`（实物周边），按 `status=2` 上架过滤，重点报 `point`（所需积分）与 `price`；生日/乐园餐玩具类常在 `1>6>20` 派对类目，两处都查。
+- **积分末班车**：`query-my-account` 发现 `currentMouthExpirePoint > 0` 时主动提醒，并直接给三条出路：兑换低门槛商品券（`catRuleIds=1>4`）、参加抽奖（§3）、或叠加到近期订单；完整资产倒计时盘法见 savings.md。
