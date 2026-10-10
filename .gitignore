@@ -18,3 +18,6 @@ Thumbs.db
 # 临时/研究产物
 *.tmp
 scratch/
+
+# 报名 Issue 草稿（含 Token 示例，勿入库）
+issue_body.md
