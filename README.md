@@ -1,4 +1,4 @@
-# 🍔 麦门总管 · mcd-concierge
+# 🍔 麦门信徒 · mcd-believer
 
 > 一个基于**麦当劳中国官方 MCP** 的 Agent Skill —— 一个技能打通点餐下单、省钱领券、营养配餐、积分商城、积分抽奖、活动日历、主题派对预约的**全场景麦当劳助手**。
 
@@ -8,13 +8,13 @@
 [![Agent Skill](https://img.shields.io/badge/Agent-Skill-yellowgreen)](./SKILL.md)
 [![License](https://img.shields.io/badge/license-MIT-lightgrey)]()
 
-解决每天最难的三个选择题：**吃什么、怎么点最省、积分怎么用不浪费**。别人做了一个场景，`mcd-concierge` 把麦当劳 MCP 的**全部能力**收进一个 Skill。
+解决每天最难的三个选择题：**吃什么、怎么点最省、积分怎么用不浪费**。别人做了一个场景，`mcd-believer` 把麦当劳 MCP 的**全部能力**收进一个 Skill。
 
 ---
 
 ## ✨ 它是什么
 
-`mcd-concierge` 是一个 **Agent Skill**（`SKILL.md` + 分场景操作手册 + MCP 客户端脚本）。在 WorkBuddy / Cursor / Cherry Studio / Trae 等支持 MCP 的客户端里接入麦当劳 MCP 并装载本 Skill，AI 就能按沉淀好的编排规则，替你完成从"想吃"到"拿到取餐码/支付链接"的完整闭环。
+`mcd-believer` 是一个 **Agent Skill**（`SKILL.md` + 分场景操作手册 + MCP 客户端脚本）。在 WorkBuddy / Cursor / Cherry Studio / Trae 等支持 MCP 的客户端里接入麦当劳 MCP 并装载本 Skill，AI 就能按沉淀好的编排规则，替你完成从"想吃"到"拿到取餐码/支付链接"的完整闭环。
 
 - 🧭 **意图路由**：一句话自动分派到点餐 / 省钱 / 营养 / 积分 / 活动 / 派对六大手册。
 - 🔗 **端到端下单**：选店 → 选品 → 算价 → 下单 → 跟单/取消，含到店、得来速、麦乐送、企业团餐四种场景。
@@ -80,7 +80,7 @@ python scripts/mcp_call.py call query-my-account '{}'
 ## 📁 项目结构
 
 ```
-mcd-concierge/
+mcd-believer/
 ├── SKILL.md                     # 技能入口：意图路由 + 全局铁律 + 默认流程
 ├── references/
 │   ├── ordering.md              # 点餐交易全流程（四种场景 + 特调 + 计价下单）
@@ -113,6 +113,6 @@ mcd-concierge/
 
 ## 📄 License
 
-MIT © 2026 mcd-concierge contributors
+MIT © 2026 mcd-believer contributors
 
 > ⚠️ 声明：本项目为非官方开发者作品，与麦当劳中国无隶属或背书关系。麦当劳相关商标归其权利人所有。

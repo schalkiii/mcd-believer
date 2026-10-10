@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-mcd-concierge MCP 客户端（独立/兜底用）
+mcd-believer MCP 客户端（独立/兜底用）
 
 在无法原生接入 MCP 的环境下，用本脚本以 JSON-RPC 2.0 over Streamable HTTP
 直连麦当劳中国 MCP（https://mcp.mcd.cn）。
@@ -76,7 +76,7 @@ def initialize():
     _, sid = _post("initialize", {
         "protocolVersion": PROTOCOL_VERSION,
         "capabilities": {},
-        "clientInfo": {"name": "mcd-concierge", "version": "1.0.0"},
+        "clientInfo": {"name": "mcd-believer", "version": "1.0.0"},
     })
     return sid
 

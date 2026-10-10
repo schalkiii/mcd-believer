@@ -1,6 +1,6 @@
 # WorkBuddy 开发上下文 · workbuddy.md
 
-本文件记录使用 WorkBuddy 开发 `mcd-concierge` Skill 的上下文，用于核验 WorkBuddy 联动活动奖励条件。
+本文件记录使用 WorkBuddy 开发 `mcd-believer` Skill 的上下文，用于核验 WorkBuddy 联动活动奖励条件。
 
 ## 环境准备
 
