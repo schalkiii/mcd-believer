@@ -1,0 +1,18 @@
+{
+  "disclaimer": "构造示例数据：字段结构对齐 available-coupons / query-my-coupons / query-store-coupons 真实返回，金额单位为分。构造值仅用于离线演示与测试。",
+  "availableCoupons": [
+    { "activityId": "AV-001", "name": "满20减4新人券", "thresholdFen": 2000, "reduceFen": 400 }
+  ],
+  "myCoupons": [
+    { "couponId": "M-001", "name": "满25减5", "thresholdFen": 2500, "reduceFen": 500, "expireInDays": 3 },
+    { "couponId": "M-002", "name": "满40减10", "thresholdFen": 4000, "reduceFen": 1000, "expireInDays": 12 },
+    { "couponId": "M-003", "name": "甜品立减3元", "thresholdFen": 0, "reduceFen": 300, "appliesToCategories": ["甜品"] }
+  ],
+  "storeCoupons": [
+    { "couponId": "C-001", "couponCode": "MCD100", "name": "满30减6", "kind": "full_reduction", "thresholdFen": 3000, "reduceFen": 600 },
+    { "couponId": "C-002", "couponCode": "MCD150", "name": "满50减15", "kind": "full_reduction", "thresholdFen": 5000, "reduceFen": 1500 },
+    { "couponId": "C-003", "couponCode": "BURGER30", "name": "汉堡单品7折", "kind": "discount", "discount": 0.7, "appliesToCategories": ["汉堡"], "group": "burger_discount" },
+    { "couponId": "C-004", "couponCode": "SNACK50", "name": "小食5折", "kind": "discount", "discount": 0.5, "appliesToCategories": ["小食"], "group": "snack_discount" },
+    { "couponId": "C-005", "couponCode": "MALA5", "name": "麦辣系列满20减5", "kind": "full_reduction", "thresholdFen": 2000, "reduceFen": 500, "appliesToTags": ["麦辣"] }
+  ]
+}

@@ -76,3 +76,16 @@ order-list(最近一单) → 提取 productCode → query-meals 核在售 → ca
 ## 业务价值
 
 把分散在 35 个工具上的麦当劳服务能力，收敛成一个可按自然语言驱动的全场景助手，降低普通用户使用 MCP 的门槛，让"吃什么、怎么点省、积分怎么用"这三件事在一轮对话内闭环解决。
+
+## 离线演示、测试与留证
+
+| 能力 | 入口 | 说明 |
+|---|---|---|
+| 一键演示 | `python demo.py` | fixtures 构造样本跑通五链路，产出两张分享卡 HTML |
+| 在线试算 | `docs/demo.html` | 单文件页面，浏览器打开即玩，算法与 solver.py 一致 |
+| 单元测试 | `python -m unittest discover -s tests` | 36 项，覆盖求解器与分享卡，CI 门禁 |
+| 确定性求解 | `scripts/solver.py` | 双约束枚举 / 券组合优化 / 零尾差 AA / 帕累托 / 订单统计 |
+| 分享卡渲染 | `scripts/card.py` | 灵签卡 + 年报人设卡，单文件竖屏 HTML |
+| 真实留证 | `python scripts/capture_evidence.py` | 只读工具调用 + 自动脱敏，存档到 `evidence/` |
+
+fixtures/ 数据为构造样本（字段结构对齐 MCP 返回），仅用于离线演示与测试；真实数据一律以 MCP 实时返回为准。

@@ -24,3 +24,9 @@ issue_body.md
 
 # 运行时用户画像（本地隐私数据）
 mcd-profile.json
+
+# 演示输出（本地生成，可随时用 demo.py 重建）
+demo_output/
+
+# 真实 MCP 留证（含个人数据，默认不提交；确认脱敏后可手动 add）
+evidence/*.json

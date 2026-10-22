@@ -20,6 +20,8 @@
 4. 用 `query-meals` 核对候选在售并取 `code`；需要换子项用 `query-meal-detail`。
 5. 用户选定 → 接 `references/ordering.md` 算价下单（如同时想省钱，叠加 savings.md）。
 
+**确定性实现**：`scripts/solver.py` 支持预算 × 热量双约束组合枚举（热量缺失的餐品自动剔除，拒绝估算），输出最饱/最省/最均衡三套方案；真实链路中把 MCP 返回的菜单+营养表归一化后喂给它即可。离线试跑：`python scripts/solver.py solve --budget 40 --kcal 800`。
+
 ## 输出建议
 
 给出方案时列明：**每样餐品的能量 + 本餐合计能量 + 蛋白质/脂肪/碳水概览**，并说明与目标热量的关系（"合计 470 kcal，低于你设的 500"）。数据一律来自 `list-nutrition-foods` 的返回值，不要凭记忆报营养数值。

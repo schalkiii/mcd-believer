@@ -1,0 +1,24 @@
+{
+  "disclaimer": "构造示例数据：字段结构对齐麦当劳 MCP list-nutrition-foods 真实返回，数值均为演示用构造值，非官方营养表。真实数据请用 scripts/mcp_call.py 现场拉取。",
+  "foods": [
+    { "name": "巨无霸", "energyKcal": 534, "proteinG": 27.0, "fatG": 27.0, "carbG": 45.0, "sodiumMg": 1014 },
+    { "name": "麦辣鸡腿汉堡", "energyKcal": 571, "proteinG": 25.0, "fatG": 30.0, "carbG": 48.0, "sodiumMg": 1090 },
+    { "name": "板烧鸡腿堡", "energyKcal": 452, "proteinG": 23.0, "fatG": 21.0, "carbG": 41.0, "sodiumMg": 930 },
+    { "name": "麦香鱼", "energyKcal": 345, "proteinG": 16.0, "fatG": 15.0, "carbG": 38.0, "sodiumMg": 720 },
+    { "name": "双层吉士汉堡", "energyKcal": 431, "proteinG": 21.0, "fatG": 22.0, "carbG": 39.0, "sodiumMg": 870 },
+    { "name": "麦辣鸡腿汉堡三件套", "energyKcal": 1086, "proteinG": 28.6, "fatG": 51.0, "carbG": 118.0, "sodiumMg": 1395 },
+    { "name": "巨无霸超值套餐", "energyKcal": 1049, "proteinG": 30.6, "fatG": 48.0, "carbG": 113.0, "sodiumMg": 1319 },
+    { "name": "薯条(小)", "energyKcal": 230, "proteinG": 2.6, "fatG": 11.0, "carbG": 30.0, "sodiumMg": 190 },
+    { "name": "薯条(中)", "energyKcal": 337, "proteinG": 3.6, "fatG": 16.0, "carbG": 44.0, "sodiumMg": 290 },
+    { "name": "薯条(大)", "energyKcal": 444, "proteinG": 4.8, "fatG": 21.0, "carbG": 58.0, "sodiumMg": 380 },
+    { "name": "麦乐鸡(5块)", "energyKcal": 235, "proteinG": 14.0, "fatG": 14.0, "carbG": 16.0, "sodiumMg": 560 },
+    { "name": "玉米杯(小)", "energyKcal": 90, "proteinG": 3.0, "fatG": 1.5, "carbG": 18.0, "sodiumMg": 210 },
+    { "name": "可乐(中)", "energyKcal": 178, "proteinG": 0.0, "fatG": 0.0, "carbG": 45.0, "sodiumMg": 15 },
+    { "name": "零糖可乐(中)", "energyKcal": 0, "proteinG": 0.0, "fatG": 0.0, "carbG": 0.0, "sodiumMg": 20 },
+    { "name": "锡兰红茶", "energyKcal": 5, "proteinG": 0.0, "fatG": 0.0, "carbG": 1.0, "sodiumMg": 10 },
+    { "name": "美式咖啡", "energyKcal": 10, "proteinG": 1.0, "fatG": 0.0, "carbG": 2.0, "sodiumMg": 12 },
+    { "name": "香芋派", "energyKcal": 247, "proteinG": 2.0, "fatG": 12.0, "carbG": 33.0, "sodiumMg": 190 },
+    { "name": "奥利奥麦旋风", "energyKcal": 265, "proteinG": 6.0, "fatG": 9.0, "carbG": 41.0, "sodiumMg": 180 },
+    { "name": "甜筒", "energyKcal": 153, "proteinG": 4.0, "fatG": 5.0, "carbG": 24.0, "sodiumMg": 80 }
+  ]
+}

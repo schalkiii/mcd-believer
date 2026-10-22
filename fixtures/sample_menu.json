@@ -1,0 +1,53 @@
+{
+  "disclaimer": "构造示例数据：字段结构对齐麦当劳 MCP query-meals 真实返回，价格/编码均为演示用构造值，非真实门店数据。真实数据请用 scripts/mcp_call.py 现场拉取。",
+  "storeCode": "1990622",
+  "storeName": "麦当劳(示例餐厅)",
+  "beType": 1,
+  "orderType": 1,
+  "categories": [
+    {
+      "categoryName": "汉堡",
+      "meals": [
+        { "code": "A1001", "name": "巨无霸", "currentPrice": 23.5, "originalPrice": 23.5, "tags": ["汉堡", "牛肉"] },
+        { "code": "A1002", "name": "麦辣鸡腿汉堡", "currentPrice": 22.0, "originalPrice": 22.0, "tags": ["汉堡", "麦辣", "鸡肉"] },
+        { "code": "A1003", "name": "板烧鸡腿堡", "currentPrice": 21.5, "originalPrice": 21.5, "tags": ["汉堡", "鸡肉"] },
+        { "code": "A1004", "name": "麦香鱼", "currentPrice": 20.0, "originalPrice": 20.0, "tags": ["汉堡", "鱼肉"] },
+        { "code": "A1005", "name": "双层吉士汉堡", "currentPrice": 15.5, "originalPrice": 15.5, "tags": ["汉堡", "牛肉"] }
+      ]
+    },
+    {
+      "categoryName": "套餐",
+      "meals": [
+        { "code": "B2001", "name": "麦辣鸡腿汉堡三件套", "currentPrice": 36.5, "originalPrice": 47.0, "tags": ["套餐", "含堡", "含小食", "含饮料"] },
+        { "code": "B2002", "name": "巨无霸超值套餐", "currentPrice": 39.5, "originalPrice": 47.0, "tags": ["套餐", "含堡", "含小食", "含饮料"] }
+      ]
+    },
+    {
+      "categoryName": "小食",
+      "meals": [
+        { "code": "C3001", "name": "薯条(小)", "currentPrice": 9.5, "originalPrice": 9.5, "tags": ["小食", "薯条"] },
+        { "code": "C3002", "name": "薯条(中)", "currentPrice": 12.5, "originalPrice": 12.5, "tags": ["小食", "薯条"] },
+        { "code": "C3003", "name": "薯条(大)", "currentPrice": 15.0, "originalPrice": 15.0, "tags": ["小食", "薯条"] },
+        { "code": "C3004", "name": "麦乐鸡(5块)", "currentPrice": 12.5, "originalPrice": 12.5, "tags": ["小食", "鸡肉"] },
+        { "code": "C3005", "name": "玉米杯(小)", "currentPrice": 8.0, "originalPrice": 8.0, "tags": ["小食", "玉米"] }
+      ]
+    },
+    {
+      "categoryName": "饮品",
+      "meals": [
+        { "code": "D4001", "name": "可乐(中)", "currentPrice": 10.0, "originalPrice": 10.0, "tags": ["饮品", "含糖"] },
+        { "code": "D4002", "name": "零糖可乐(中)", "currentPrice": 10.0, "originalPrice": 10.0, "tags": ["饮品", "无糖"] },
+        { "code": "D4003", "name": "锡兰红茶", "currentPrice": 7.5, "originalPrice": 7.5, "tags": ["饮品", "无糖"] },
+        { "code": "D4004", "name": "美式咖啡", "currentPrice": 12.0, "originalPrice": 12.0, "tags": ["饮品", "无糖"] }
+      ]
+    },
+    {
+      "categoryName": "甜品",
+      "meals": [
+        { "code": "E5001", "name": "香芋派", "currentPrice": 8.5, "originalPrice": 8.5, "tags": ["甜品", "派"] },
+        { "code": "E5002", "name": "奥利奥麦旋风", "currentPrice": 11.0, "originalPrice": 11.0, "tags": ["甜品", "冰淇淋"] },
+        { "code": "E5003", "name": "甜筒", "currentPrice": 6.0, "originalPrice": 6.0, "tags": ["甜品", "冰淇淋"] }
+      ]
+    }
+  ]
+}

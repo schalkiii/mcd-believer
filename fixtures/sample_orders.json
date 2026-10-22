@@ -1,0 +1,24 @@
+{
+  "disclaimer": "构造示例数据：字段结构对齐 order-list / query-my-account 真实返回，金额单位为分。构造值仅用于离线演示与测试。",
+  "orders": [
+    { "orderId": "O-20260712-001", "orderTime": "2026-07-12 07:42", "channel": "到店自取", "storeName": "麦当劳(示例餐厅)", "totalFen": 1350, "items": [{ "name": "吉士蛋麦满分套餐", "quantity": 1 }] },
+    { "orderId": "O-20260718-002", "orderTime": "2026-07-18 22:31", "channel": "麦乐送", "storeName": "麦当劳(示例餐厅)", "totalFen": 4180, "items": [{ "name": "巨无霸", "quantity": 1 }, { "name": "薯条(中)", "quantity": 1 }, { "name": "可乐(中)", "quantity": 1 }] },
+    { "orderId": "O-20260803-003", "orderTime": "2026-08-03 12:05", "channel": "到店自取", "storeName": "麦当劳(示例餐厅)", "totalFen": 3650, "items": [{ "name": "麦辣鸡腿汉堡三件套", "quantity": 1 }] },
+    { "orderId": "O-20260809-004", "orderTime": "2026-08-09 23:12", "channel": "麦乐送", "storeName": "麦当劳(示例餐厅)", "totalFen": 2870, "items": [{ "name": "双层吉士汉堡", "quantity": 1 }, { "name": "薯条(小)", "quantity": 1 }, { "name": "零糖可乐(中)", "quantity": 1 }] },
+    { "orderId": "O-20260815-005", "orderTime": "2026-08-15 15:20", "channel": "到店自取", "storeName": "麦当劳(示例餐厅)", "totalFen": 2100, "items": [{ "name": "奥利奥麦旋风", "quantity": 1 }, { "name": "甜筒", "quantity": 1 }] },
+    { "orderId": "O-20260821-006", "orderTime": "2026-08-21 18:47", "channel": "到店自取", "storeName": "麦当劳(示例餐厅)", "totalFen": 3950, "items": [{ "name": "巨无霸超值套餐", "quantity": 1 }] },
+    { "orderId": "O-20260821-007", "orderTime": "2026-08-21 21:03", "channel": "麦乐送", "storeName": "麦当劳(示例餐厅)", "totalFen": 1560, "items": [{ "name": "薯条(小)", "quantity": 1 }, { "name": "麦乐鸡(5块)", "quantity": 1 }] },
+    { "orderId": "O-20260902-008", "orderTime": "2026-09-02 08:15", "channel": "得来速", "storeName": "麦当劳(示例餐厅)", "totalFen": 1420, "items": [{ "name": "脆薯饼", "quantity": 1 }, { "name": "美式咖啡", "quantity": 1 }] },
+    { "orderId": "O-20260907-009", "orderTime": "2026-09-07 19:33", "channel": "到店自取", "storeName": "麦当劳(示例餐厅)", "totalFen": 5200, "items": [{ "name": "巨无霸", "quantity": 2 }, { "name": "麦辣鸡腿汉堡", "quantity": 2 }, { "name": "薯条(大)", "quantity": 1 }, { "name": "可乐(中)", "quantity": 2 }] },
+    { "orderId": "O-20260914-010", "orderTime": "2026-09-14 22:58", "channel": "麦乐送", "storeName": "麦当劳(示例餐厅)", "totalFen": 3680, "items": [{ "name": "板烧鸡腿堡", "quantity": 1 }, { "name": "玉米杯(小)", "quantity": 1 }, { "name": "零糖可乐(中)", "quantity": 1 }] },
+    { "orderId": "O-20260925-011", "orderTime": "2026-09-25 12:40", "channel": "到店自取", "storeName": "麦当劳(示例餐厅)", "totalFen": 3990, "items": [{ "name": "麦辣鸡腿汉堡三件套", "quantity": 1 }] },
+    { "orderId": "O-20261008-012", "orderTime": "2026-10-08 21:26", "channel": "麦乐送", "storeName": "麦当劳(示例餐厅)", "totalFen": 2540, "items": [{ "name": "巨无霸", "quantity": 1 }, { "name": "香芋派", "quantity": 1 }] }
+  ],
+  "account": {
+    "availablePoint": 8420,
+    "currentMouthExpirePoint": 1200,
+    "nextMouthExpirePoint": 3000,
+    "expiredPoint": 0,
+    "totalPoint": 21540
+  }
+}

@@ -65,3 +65,23 @@
 ## 导出说明
 
 以上脉络可由 WorkBuddy 会话记录导出替换/补充。本文件为人工整理的开发上下文摘要。
+
+## 第三轮迭代：冲榜补强——星级磁铁四件套（2026-10-22）
+
+背景：官方排行榜按 Star 排名（上榜门槛 32 Star），本项目当时 4 Star 未上榜。全量复盘 TOP10 高星项目后确认四件「星级磁铁」：免 Token 即玩 Demo、确定性算法内核 + 测试、可截图分享卡、营销化 README。本轮全部落地：
+
+| 高星项目打法 | 本项目落地 |
+|---|---|
+| 在线试算器 / demo.py + fixtures / 离线缓存 | `docs/demo.html` 在线试算页 + `fixtures/` 构造样本 + 根目录 `demo.py` 一键五链路演示 |
+| 确定性求解器 + 单测 + CI 徽章 | `scripts/solver.py`（双约束枚举/券优化/AA/帕累托/订单统计）+ `tests/` 36 项 + GitHub Actions CI |
+| 可截图分享卡 | `scripts/card.py`：麦门灵签卡 + 年报人设卡（单文件竖屏 HTML，品牌红金、零外链） |
+| 营销化 README（数字战报/徽章/Star 引导） | README 重写：602 套候选实测战报、徽章组、30 秒体验、榜单空白定位 |
+
+工程沉淀：
+- **修复枚举剪枝 bug**：原 `enumerate_combos` 用「遇超预算即 break」，但组合序列按字典序而非价格序，会漏掉后续更便宜的合法组合（58 套 vs 正确的 602 套）。改为索引递归 + 累计价格剪枝（有序数组上安全），并补回归测试 `test_enumeration_not_truncated_by_expensive_prefix`。JS 版（docs/demo.html）与 Python 版结果逐项对齐（602 套 / 三方案一致）。
+- **券互斥保守模型**：同组互斥 + 适用范围不重叠（一张餐品最多带一张券），避免演示中出现 5 券叠加的不实宣传；真实可叠性以 calculate-price 为准。
+- **整数分运算**：金额内部一律 int 分，展示才 ÷100，杜绝浮点误差（与 mcd-wrapped 等头部项目同一立场）。
+- **拒绝估算**：营养缺失餐品在求解器中自动剔除，与 mcd-budget-bite 的工程纪律对齐。
+- 补 MIT LICENSE、`.github/workflows/ci.yml`（3.8/3.12 双版本）、`scripts/capture_evidence.py`（只读脱敏留证）。
+
+新增场景编排（references 同步）：早餐 10:30 压哨流（now-time-info 时钟感知）、特调工坊（民间配方 → 官方 modification 组装，缺组件直说做不了）。

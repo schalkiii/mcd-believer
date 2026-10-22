@@ -68,3 +68,11 @@ description: 麦门信徒 —— 麦当劳中国 MCP 全能助手。基于 mcd-m
 - "按老样子来一份" / "给我出张麦门年报" → 走画像手册（profile.md）
 
 无法原生接入 MCP 的环境，可用 `scripts/mcp_call.py` 以 JSON-RPC 直连（见脚本头部说明）。
+
+## 离线体验与确定性内核（无 Token 也可玩）
+
+- `python demo.py` —— 一键跑通预算求解 / 券优化 / 灵签卡 / 年报卡 / AA 五链路（`fixtures/` 构造样本）
+- `python scripts/solver.py solve --budget 40 --kcal 800` —— 双约束求解 CLI
+- `docs/demo.html` —— 在线试算页，浏览器打开即玩
+
+**真实链路中的分工**：菜单 / 营养 / 券 / 订单数据由 MCP 实时返回 → 归一化后喂给 `scripts/solver.py` 做算术（组合枚举、券优化、AA 分账、订单统计）→ Agent 只做表达、确认与写操作。分享卡用 `scripts/card.py` 渲染。求解器输出只是候选，成交价以 `calculate-price` 为准。

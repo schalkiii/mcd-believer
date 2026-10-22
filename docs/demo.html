@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>麦门信徒 · 在线试算（无需 Token）</title>
+<style>
+  :root { --red:#DA291C; --gold:#FFC72C; --ink:#2C2C2A; --muted:#8A8578; --line:#E5E2D8; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#F5F2EA; color:var(--ink);
+         font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; }
+  .wrap { max-width:860px; margin:0 auto; padding:24px 16px 48px; }
+  header.hero { background:var(--red); color:#fff; border-radius:16px; padding:28px 24px; }
+  header.hero h1 { margin:0; font-size:24px; font-weight:500; }
+  header.hero p { margin:8px 0 0; font-size:13px; opacity:.9; line-height:1.7; }
+  .panel { background:#fff; border:1px solid var(--line); border-radius:16px;
+           padding:20px; margin-top:16px; }
+  .panel h2 { margin:0 0 14px; font-size:15px; font-weight:500; }
+  .ctrl { display:flex; flex-wrap:wrap; gap:18px 28px; align-items:center; }
+  .ctrl label { font-size:13px; color:var(--muted); display:block; margin-bottom:6px; }
+  .ctrl .val { font-size:20px; font-weight:500; color:var(--red); }
+  input[type=range] { width:180px; accent-color:var(--red); }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; }
+  .chip { border:1px solid var(--line); border-radius:999px; padding:5px 14px;
+          font-size:13px; cursor:pointer; user-select:none; background:#fff; }
+  .chip.on { background:var(--gold); border-color:var(--gold); color:#633806; }
+  button.go { background:var(--red); color:#fff; border:none; border-radius:10px;
+              padding:12px 28px; font-size:15px; cursor:pointer; }
+  button.go:active { opacity:.85; }
+  .plans { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+           gap:12px; margin-top:14px; }
+  .plan { border:1px solid var(--line); border-radius:12px; padding:14px 16px; background:#fff; }
+  .plan h3 { margin:0 0 4px; font-size:14px; font-weight:500; }
+  .plan h3 span { color:var(--muted); font-size:12px; font-weight:400; }
+  .plan ul { margin:8px 0 0; padding:0; list-style:none; font-size:13px; }
+  .plan li { display:flex; justify-content:space-between; padding:3px 0; }
+  .plan .total { margin-top:10px; padding-top:10px; border-top:1px dashed var(--line);
+                 display:flex; justify-content:space-between; align-items:baseline; }
+  .plan .final { font-size:22px; font-weight:500; color:var(--red); }
+  .plan .save { font-size:12px; color:var(--muted); margin-top:4px; }
+  .meta { font-size:12px; color:var(--muted); margin-top:10px; }
+  .aa { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; }
+  .aa input { width:110px; padding:8px 10px; border:1px solid var(--line);
+              border-radius:8px; font-size:14px; }
+  .aa-result { font-size:14px; margin-top:12px; line-height:1.8; }
+  .aa-result b { color:var(--red); }
+  footer { margin-top:20px; font-size:12px; color:var(--muted); line-height:1.8; }
+  footer a { color:var(--red); }
+  .empty { font-size:13px; color:var(--muted); padding:18px; text-align:center;
+           border:1px dashed var(--line); border-radius:12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <h1>麦门信徒 · 在线试算</h1>
+    <p>预算 × 热量双约束点餐求解器 + 券组合优化 + 零尾差 AA —— 与仓库 scripts/solver.py 同一套确定性算法。<br>
+       无需 MCP Token、无需安装，打开即玩。<b>页面内置构造示例数据（非实时价格），真实下单价以官方 calculate-price 核价为准。</b></p>
+  </header>
+
+  <div class="panel">
+    <h2>① 约束条件</h2>
+    <div class="ctrl">
+      <div>
+        <label>预算上限</label>
+        <div class="val" id="budgetVal">40 元</div>
+        <input type="range" id="budget" min="10" max="80" step="1" value="40">
+      </div>
+      <div>
+        <label>热量上限</label>
+        <div class="val" id="kcalVal">800 kcal</div>
+        <input type="range" id="kcal" min="200" max="1500" step="50" value="800">
+      </div>
+      <div>
+        <label>忌口过滤</label>
+        <div class="chips" id="excludeChips">
+          <span class="chip" data-k="麦辣">不吃麦辣</span>
+          <span class="chip" data-k="含糖">无糖优先</span>
+          <span class="chip" data-k="鱼肉">不吃鱼</span>
+        </div>
+      </div>
+      <div>
+        <label>券池（可叠性为保守模型：同组互斥、范围不重叠）</label>
+        <div class="chips" id="couponChips"></div>
+      </div>
+      <div>
+        <button class="go" id="solveBtn">开始求解</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>② 求解结果（最饱 / 最省 / 最均衡）</h2>
+    <div class="meta" id="candidateMeta"></div>
+    <div class="plans" id="plans"></div>
+  </div>
+
+  <div class="panel">
+    <h2>③ 多人拼单零尾差 AA</h2>
+    <div class="aa">
+      <div><label>实付总额（元）</label><input id="aaTotal" type="number" min="0" step="0.01" value="33.50"></div>
+      <div><label>人数</label><input id="aaPeople" type="number" min="1" step="1" value="6"></div>
+      <div><button class="go" id="aaBtn">分账</button></div>
+    </div>
+    <div class="aa-result" id="aaResult"></div>
+  </div>
+
+  <footer>
+    <p>数据与算法：页面内置菜单 / 营养 / 券池为构造样本（结构对齐麦当劳 MCP 返回），金额内部按「分」整数运算；
+       求解逻辑与 <a href="https://github.com/schalkiii/mcd-believer">github.com/schalkiii/mcd-believer</a> 的 scripts/solver.py 一致（最饱=热量最高、最省=实付最低、最均衡=每元蛋白质最高）。</p>
+    <p>本项目为非官方开发者作品，与麦当劳中国无隶属关系。真实点餐请装载完整 Skill 并接入麦当劳官方 MCP。</p>
+  </footer>
+</div>
+
+<script>
+"use strict";
+var RED = "#DA291C", GOLD = "#FFC72C";
+
+var ITEMS = [
+  {code:"A1001", name:"巨无霸", priceFen:2350, category:"汉堡", tags:["牛肉"], kcal:534, protein:27.0},
+  {code:"A1002", name:"麦辣鸡腿汉堡", priceFen:2200, category:"汉堡", tags:["麦辣","鸡肉"], kcal:571, protein:25.0},
+  {code:"A1003", name:"板烧鸡腿堡", priceFen:2150, category:"汉堡", tags:["鸡肉"], kcal:452, protein:23.0},
+  {code:"A1004", name:"麦香鱼", priceFen:2000, category:"汉堡", tags:["鱼肉"], kcal:345, protein:16.0},
+  {code:"A1005", name:"双层吉士汉堡", priceFen:1550, category:"汉堡", tags:["牛肉"], kcal:431, protein:21.0},
+  {code:"B2001", name:"麦辣鸡腿汉堡三件套", priceFen:3650, category:"套餐", tags:["套餐","麦辣"], kcal:1086, protein:28.6},
+  {code:"B2002", name:"巨无霸超值套餐", priceFen:3950, category:"套餐", tags:["套餐"], kcal:1049, protein:30.6},
+  {code:"C3001", name:"薯条(小)", priceFen:950, category:"小食", tags:["薯条"], kcal:230, protein:2.6},
+  {code:"C3002", name:"薯条(中)", priceFen:1250, category:"小食", tags:["薯条"], kcal:337, protein:3.6},
+  {code:"C3003", name:"薯条(大)", priceFen:1500, category:"小食", tags:["薯条"], kcal:444, protein:4.8},
+  {code:"C3004", name:"麦乐鸡(5块)", priceFen:1250, category:"小食", tags:["鸡肉"], kcal:235, protein:14.0},
+  {code:"C3005", name:"玉米杯(小)", priceFen:800, category:"小食", tags:["玉米"], kcal:90, protein:3.0},
+  {code:"D4001", name:"可乐(中)", priceFen:1000, category:"饮品", tags:["含糖"], kcal:178, protein:0},
+  {code:"D4002", name:"零糖可乐(中)", priceFen:1000, category:"饮品", tags:["无糖"], kcal:0, protein:0},
+  {code:"D4003", name:"锡兰红茶", priceFen:750, category:"饮品", tags:["无糖"], kcal:5, protein:0},
+  {code:"D4004", name:"美式咖啡", priceFen:1200, category:"饮品", tags:["无糖"], kcal:10, protein:1.0},
+  {code:"E5001", name:"香芋派", priceFen:850, category:"甜品", tags:["派"], kcal:247, protein:2.0},
+  {code:"E5002", name:"奥利奥麦旋风", priceFen:1100, category:"甜品", tags:["冰淇淋"], kcal:265, protein:6.0},
+  {code:"E5003", name:"甜筒", priceFen:600, category:"甜品", tags:["冰淇淋"], kcal:153, protein:4.0}
+];
+
+var COUPONS = [
+  {id:"C-001", name:"满30减6", kind:"full", threshold:3000, reduce:600},
+  {id:"C-002", name:"满50减15", kind:"full", threshold:5000, reduce:1500},
+  {id:"C-003", name:"汉堡7折", kind:"discount", discount:0.7, categories:["汉堡"], group:"burger"},
+  {id:"C-004", name:"小食5折", kind:"discount", discount:0.5, categories:["小食"], group:"snack"},
+  {id:"C-005", name:"麦辣满20减5", kind:"full", threshold:2000, reduce:500, tags:["麦辣"]},
+  {id:"M-001", name:"我的券·满25减5", kind:"full", threshold:2500, reduce:500},
+  {id:"M-002", name:"我的券·满40减10", kind:"full", threshold:4000, reduce:1000},
+  {id:"M-003", name:"我的券·甜品立减3元", kind:"full", threshold:0, reduce:300, categories:["甜品"]}
+];
+
+function yuan(fen) { return (fen / 100).toFixed(2); }
+function esc(s) { return String(s).replace(/[&<>"']/g, function(c) {
+  return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+
+function comboSig(items) { return items.map(function(i){return i.code;}).join("+"); }
+
+function comboScope(combo, coupon) {
+  var idx = [];
+  for (var i = 0; i < combo.length; i++) {
+    var it = combo[i];
+    var noScope = !coupon.categories && !coupon.tags;
+    var hit = noScope ||
+      (coupon.categories && coupon.categories.indexOf(it.category) >= 0) ||
+      (coupon.tags && it.tags.some(function(t){ return coupon.tags.indexOf(t) >= 0; }));
+    if (hit) idx.push(i);
+  }
+  return idx;
+}
+
+function couponReduction(combo, coupon) {
+  var scope = comboScope(combo, coupon);
+  var sum = scope.reduce(function(a, i){ return a + combo[i].priceFen; }, 0);
+  if (sum <= 0) return 0;
+  if (coupon.kind === "full") return sum >= coupon.threshold ? coupon.reduce : 0;
+  return Math.round(sum * (1 - coupon.discount));
+}
+
+function optimizeCoupons(combo, pool) {
+  var subtotal = combo.reduce(function(a, i){ return a + i.priceFen; }, 0);
+  var scopes = {};
+  pool.forEach(function(c){ scopes[c.id] = comboScope(combo, c); });
+  var best = null;
+  var n = pool.length;
+  for (var mask = 1; mask < (1 << n); mask++) {
+    var chosen = [], groups = [], used = {}, overlap = false;
+    for (var b = 0; b < n; b++) {
+      if (!(mask & (1 << b))) continue;
+      var c = pool[b];
+      if (c.group) { if (groups.indexOf(c.group) >= 0) { overlap = true; break; } groups.push(c.group); }
+      for (var k = 0; k < scopes[c.id].length; k++) {
+        if (used[scopes[c.id][k]]) { overlap = true; break; }
+        used[scopes[c.id][k]] = true;
+      }
+      if (overlap) break;
+      chosen.push(c);
+    }
+    if (overlap || chosen.length === 0) continue;
+    var reduction = chosen.reduce(function(a, c){ return a + couponReduction(combo, c); }, 0);
+    if (reduction <= 0) continue;
+    var key = [-reduction, chosen.length, chosen.map(function(c){return c.id;}).join(",")];
+    if (!best || key.join("|") < best.key.join("|")) best = {key:key, chosen:chosen, reduction:reduction};
+  }
+  if (!best) return {subtotal:subtotal, chosen:[], final:subtotal, saving:0};
+  return {subtotal:subtotal, chosen:best.chosen, final:Math.max(subtotal - best.reduction, 0), saving:best.reduction};
+}
+
+function enumerateCombos(items, budgetFen, kcalMax) {
+  var ordered = items.slice().sort(function(a, b){ return a.priceFen - b.priceFen || (a.name < b.name ? -1 : 1); });
+  var out = [];
+  var sizes = [1, 2, 3, 4];
+  for (var s = 0; s < sizes.length; s++) {
+    var size = sizes[s];
+    var idx = [];
+    (function recurse(start) {
+      if (idx.length === size) {
+        var combo = idx.map(function(i){ return ordered[i]; });
+        var totals = combo.reduce(function(a, i){
+          return {priceFen:a.priceFen + i.priceFen, kcal:a.kcal + i.kcal, protein:a.protein + i.protein};},
+          {priceFen:0, kcal:0, protein:0});
+        if (totals.priceFen <= budgetFen && totals.kcal <= kcalMax) out.push({combo:combo, totals:totals});
+        return;
+      }
+      for (var i = start; i < ordered.length; i++) {
+        if (ordered[i].priceFen > budgetFen) break;
+        idx.push(i); recurse(i + 1); idx.pop();
+      }
+    })(0);
+  }
+  return out;
+}
+
+function selectPlans(candidates, kcalMax) {
+  if (!candidates.length) return null;
+  function nameKey(c) { return c.combo.map(function(i){return i.name;}).join("+"); }
+  var fullest = candidates.slice().sort(function(a, b){
+    return b.totals.kcal - a.totals.kcal || a.totals.priceFen - b.totals.priceFen || (nameKey(a) < nameKey(b) ? -1 : 1); })[0];
+  var cheapest = candidates.slice().sort(function(a, b){
+    return a.totals.priceFen - b.totals.priceFen || b.totals.kcal - a.totals.kcal || (nameKey(a) < nameKey(b) ? -1 : 1); })[0];
+  var pool = candidates.filter(function(c){ return c.totals.kcal >= 0.5 * kcalMax; });
+  if (!pool.length) pool = candidates;
+  var balanced = pool.slice().sort(function(a, b){
+    return (b.totals.protein / b.totals.priceFen) - (a.totals.protein / a.totals.priceFen)
+      || a.totals.priceFen - b.totals.priceFen || (nameKey(a) < nameKey(b) ? -1 : 1); })[0];
+  return {fullest:fullest, cheapest:cheapest, balanced:balanced};
+}
+
+var excludeKeys = [];
+var couponOn = {};
+
+function renderCouponChips() {
+  var box = document.getElementById("couponChips");
+  box.innerHTML = "";
+  COUPONS.forEach(function(c) {
+    var span = document.createElement("span");
+    span.className = "chip" + (couponOn[c.id] ? " on" : "");
+    span.textContent = c.name;
+    span.onclick = function() { couponOn[c.id] = !couponOn[c.id]; renderCouponChips(); };
+    box.appendChild(span);
+  });
+}
+
+function planCard(title, sub, plan, pool) {
+  var opt = optimizeCoupons(plan.combo, pool);
+  var lis = plan.combo.map(function(i){
+    return "<li><span>" + esc(i.name) + "</span><span>¥" + yuan(i.priceFen) + "</span></li>"; }).join("");
+  var saveLine = opt.saving > 0
+    ? "<div class='save'>用券：" + opt.chosen.map(function(c){ return esc(c.name); }).join(" + ") +
+      "，省 ¥" + yuan(opt.saving) + "</div>"
+    : "<div class='save'>当前券池无可用券</div>";
+  return "<div class='plan'><h3>" + title + " <span>" + sub + "</span></h3><ul>" + lis + "</ul>" +
+    "<div class='total'><span style='font-size:12px;color:var(--muted)'>原价 ¥" + yuan(opt.subtotal) + "</span>" +
+    "<span class='final'>¥" + yuan(opt.final) + "</span></div>" + saveLine +
+    "<div class='save'>" + Math.round(plan.totals.kcal) + " kcal · 蛋白质 " + plan.totals.protein.toFixed(1) + " g</div></div>";
+}
+
+function solve() {
+  var budgetFen = parseInt(document.getElementById("budget").value, 10) * 100;
+  var kcalMax = parseInt(document.getElementById("kcal").value, 10);
+  document.getElementById("budgetVal").textContent = document.getElementById("budget").value + " 元";
+  document.getElementById("kcalVal").textContent = kcalMax + " kcal";
+
+  var items = ITEMS.filter(function(it){
+    return !excludeKeys.some(function(k){ return it.name.indexOf(k) >= 0 || it.tags.indexOf(k) >= 0; }); });
+  var pool = COUPONS.filter(function(c){ return couponOn[c.id]; });
+  var candidates = enumerateCombos(items, budgetFen, kcalMax);
+  var plans = selectPlans(candidates, kcalMax);
+
+  document.getElementById("candidateMeta").textContent =
+    "候选组合 " + candidates.length + " 套（每餐最多 4 件、每件 1 份）";
+  var box = document.getElementById("plans");
+  if (!plans) { box.innerHTML = "<div class='empty'>无解：当前约束下没有可行组合，可放宽预算 / 热量或忌口</div>"; return; }
+  box.innerHTML =
+    planCard("最饱", "热量最高", plans.fullest, pool) +
+    planCard("最省", "实付最低", plans.cheapest, pool) +
+    planCard("最均衡", "每元蛋白质最高", plans.balanced, pool);
+}
+
+function splitAA() {
+  var totalFen = Math.round(parseFloat(document.getElementById("aaTotal").value || "0") * 100);
+  var people = parseInt(document.getElementById("aaPeople").value || "1", 10);
+  if (!(people > 0) || totalFen < 0) {
+    document.getElementById("aaResult").innerHTML = "请输入有效金额与人数（人数为正整数）。";
+    return;
+  }
+  var base = Math.floor(totalFen / people), rem = totalFen - base * people;
+  var shares = [];
+  for (var i = 0; i < people; i++) shares.push(base + (i < rem ? 1 : 0));
+  document.getElementById("aaResult").innerHTML =
+    "每人应付：<b>" + shares.map(function(s){ return "¥" + yuan(s); }).join(" / ") + "</b><br>" +
+    "合计 ¥" + yuan(shares.reduce(function(a, b){ return a + b; }, 0)) +
+    "（与实付一致，零尾差；最大余数法，前 " + rem + " 人多付 1 分）";
+}
+
+document.getElementById("excludeChips").addEventListener("click", function(e) {
+  if (!e.target.dataset.k) return;
+  var k = e.target.dataset.k;
+  var at = excludeKeys.indexOf(k);
+  if (at >= 0) excludeKeys.splice(at, 1); else excludeKeys.push(k);
+  e.target.classList.toggle("on");
+});
+COUPONS.forEach(function(c){ couponOn[c.id] = true; });
+renderCouponChips();
+document.getElementById("solveBtn").onclick = solve;
+document.getElementById("aaBtn").onclick = splitAA;
+solve();
+splitAA();
+</script>
+</body>
+</html>
